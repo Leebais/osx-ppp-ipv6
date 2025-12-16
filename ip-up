@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# ip-up 脚本：PPP 链路建立成功后自动运行
+# 参数说明：
+#   $1 = 接口名 (例如 ppp0)
+#   $2 = TTY 设备名
+#   $3 = TTY 速率
+#   $4 = 本地 IP 地址
+#   $5 = 远端 IP 地址
+#   $6 = ipparam 参数（如果在 pppd 配置里设置了）
+MAXLINES=10
+
+LOGFILE="/var/log/ppp-ip-up.log"
+
+if [ -f "$LOGFILE" ]; then
+    tail -n $MAXLINES "$LOGFILE" > "$LOGFILE.tmp"
+    mv "$LOGFILE.tmp" "$LOGFILE"
+fi
+
+echo "[$(date)] PPP link up detected on interface $1" >> $LOGFILE
+echo "[$(date)] Local IP: $4, Remote IP: $5" >> $LOGFILE
+
+# 启动你的 RA 抓包程序（替换成实际路径）
+/opt/homebrew/bin/ipv6_counter >> $LOGFILE 2>&1 &
+
+echo "[$(date)] RA sniffer started for $1" >> $LOGFILE
+
