@@ -21,7 +21,7 @@ echo "[$(date)] PPP link up detected on interface $1" >> $LOGFILE
 echo "[$(date)] Local IP: $4, Remote IP: $5" >> $LOGFILE
 
 # 启动你的 RA 抓包程序（替换成实际路径）
-/opt/homebrew/bin/ipv6_counter >> $LOGFILE 2>&1 &
+/usr/local/bin/ra_sniffer >> $LOGFILE 2>&1 &
 
 echo "[$(date)] RA sniffer started for $1" >> $LOGFILE
 
